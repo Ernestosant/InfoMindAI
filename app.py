@@ -167,7 +167,7 @@ with tabs[0]:
 
 #--------------------------------------------Tab for query  with multiples pdfs---------------------------------------------------------------
 with tabs[1]:
-    if 'embeding' not in st.session_state['embdeings']:
+    if 'embedings' not in st.session_state:
         st.session_state['embedings'] = False
 
     question = st.text_area("Question")
