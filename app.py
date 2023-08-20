@@ -76,7 +76,7 @@ def summaries_to_word_download(content):
     # Permitir la descarga del archivo a través de Streamlit
     with open(filename, "rb") as file:
         btn = col3.download_button(
-            label="Descargar documento de Word",
+            label="Download",
             data=file,
             file_name="documento.docx",
             mime="application/vnd.openxmlformats-officedocument.wordprocessingml.document"
@@ -90,13 +90,13 @@ def summaries_to_word_download(content):
 st.set_page_config(page_title="InfoMindAI", page_icon='project_logo.jpg',
                     layout='centered', initial_sidebar_state='auto',)
 
-# Configuración del título y el logotipo
-titulo = "InfoMindAI"
-url_logo = "project_logo.jpg"  # Reemplaza con la URL de tu logotipo
+# Setup
+title = "InfoMindAI"
+url_logo = "project_logo.jpg"  
 
 html_code = f"""
     <div style="text-align: center; margin: 20px;">
-        <h1>{titulo} <img src="{url_logo}" style="height:50px;"></h1>
+        <h1>{title} <img src="{url_logo}" style="height:5px;"></h1>
     </div>
 """
 
