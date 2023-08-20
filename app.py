@@ -87,8 +87,20 @@ def summaries_to_word_download(content):
 
 
 #***********************Interface**************************************************************************************
+st.set_page_config(page_title="InfoMindAI", page_icon='project_logo.jpg',
+                    layout='centered', initial_sidebar_state='auto',)
 
-st.title("InfoMindAI")
+# Configuración del título y el logotipo
+titulo = "InfoMindAI"
+url_logo = "project_logo.jpg"  # Reemplaza con la URL de tu logotipo
+
+html_code = f"""
+    <div style="text-align: center; margin: 20px;">
+        <h1>{titulo} <img src="{url_logo}" style="height:50px;"></h1>
+    </div>
+"""
+
+st.markdown(html_code, unsafe_allow_html=True)
 
 
 tab_titles = ['Sumarize PDFs','Chat with PDFs', 'Chat with CSV and Excel']
@@ -184,16 +196,18 @@ with tabs[2]:
         col_answer.markdown("## Answers")
         csv_name = data_files_path.split('/')[-1].rstrip('.xlsx')+'.csv'
         df.to_csv('data_files/'+csv_name)
-
-        # create a csv agent
-        agent = create_csv_agent(
-            ChatOpenAI(temperature=0, model="gpt-3.5-turbo"),
-            path='data_files/'+csv_name,
-            verbose=True,
-            agent_type=AgentType.OPENAI_FUNCTIONS,
-        )
-        if query:
-            col_answer.write(agent.run(query))
+        try:
+            # create a csv agent
+            agent = create_csv_agent(
+                ChatOpenAI(temperature=0, model="gpt-3.5-turbo"),
+                path='data_files/'+csv_name,
+                verbose=True,
+                agent_type=AgentType.OPENAI_FUNCTIONS,
+            )
+            if query:
+                col_answer.write(agent.run(query))
+        except:
+            st.write('Set Api_key')
 
 
 
