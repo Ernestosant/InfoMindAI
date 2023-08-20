@@ -7,3 +7,4 @@ pandas
 nltk
 python-dotenv
 python-docx
+openpyxl

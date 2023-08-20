@@ -167,8 +167,11 @@ with tabs[0]:
 
 #--------------------------------------------Tab for query  with multiples pdfs---------------------------------------------------------------
 with tabs[1]:
+    if 'embeding' not in st.session_state['embdeings']:
+        st.session_state['embedings'] = False
+
     question = st.text_area("Question")
-    if len(os.listdir('pdfs'))>0 and apikey:    
+    if len(os.listdir('pdfs'))>0 and apikey and not(st.session_state['embedings']):    
         #Get text from pdfs
         pdf = SimpleDirectoryReader('pdfs').load_data()
         #Select the LLm model
@@ -178,6 +181,7 @@ with tabs[1]:
         service_context = ServiceContext.from_defaults(llm_predictor=model)
         index = GPTVectorStoreIndex.from_documents(pdf, service_context = service_context)
         query_engine = index.as_query_engine()
+        st.session_state['embedings'] = True
 
         if question:
             response = query_engine.query(question)
