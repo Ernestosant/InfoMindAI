@@ -6,3 +6,4 @@ llama-index
 pandas
 nltk
 python-dotenv
+python-docx
