@@ -12,7 +12,11 @@ import pandas as pd
 import openai
 from langchain.agents import create_csv_agent
 from langchain.agents.agent_types import AgentType
+import shutil
 
+# Limpiando archivos temporales
+shutil.rmtree('pdfs')
+shutil.rmtree('data_files')
 
 
 #***********************Functions***************************************************************************************
