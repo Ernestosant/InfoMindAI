@@ -9,7 +9,7 @@ import os
 from docx import Document
 from llama_index import GPTVectorStoreIndex, SimpleDirectoryReader, LLMPredictor, ServiceContext
 import pandas as pd
-
+import openai
 from langchain.agents import create_csv_agent
 from langchain.agents.agent_types import AgentType
 
@@ -110,6 +110,7 @@ tabs = st.tabs(tab_titles)
 with st.sidebar:
     apikey = st.text_input(label='OpenAI API_KEY', type= 'password')    
     os.environ["OPENAI_API_KEY"] =apikey
+    openai.api_key = apikey
     if apikey:
         llm = ChatOpenAI(temperature=0.2, model = 'gpt-3.5-turbo')
     
@@ -150,9 +151,9 @@ with tabs[0]:
     
 
     if get_summaries:
-        # summaries_list = custom_summary("pdfs", custom_prompt=summarize_prompt)
-        # summaries = '\n\n'.join([summary for summary in summaries_list])     
-        x=2                
+        summaries_list = custom_summary("pdfs", custom_prompt=summarize_prompt)
+        summaries = '\n\n'.join([summary for summary in summaries_list])     
+                     
         
     # Save all summaries into one .word file  
     
@@ -163,7 +164,7 @@ with tabs[0]:
 #--------------------------------------------Tab for query  with multiples pdfs---------------------------------------------------------------
 with tabs[1]:
     question = st.text_area("Question")
-    if len(os.listdir('pdfs'))>0:    
+    if len(os.listdir('pdfs'))>0 and apikey:    
         #Get text from pdfs
         pdf = SimpleDirectoryReader('pdfs').load_data()
         #Select the LLm model
