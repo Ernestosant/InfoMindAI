@@ -8,11 +8,15 @@ import glob
 import os
 from docx import Document
 from llama_index import GPTVectorStoreIndex, SimpleDirectoryReader, LLMPredictor, ServiceContext
+import pandas as pd
+
+from langchain.agents import create_csv_agent
+from langchain.agents.agent_types import AgentType
 
 
 
 #***********************Functions***************************************************************************************
-# Guardar los pdfs subidos
+# Save pdf uploaded
 def save_uploaded_pdfs(upload_files):
     # Crear el directorio 'pdfs' si no existe
     if not os.path.exists('pdfs'):
@@ -22,6 +26,14 @@ def save_uploaded_pdfs(upload_files):
     for uploaded_file in upload_files:
         with open(os.path.join('pdfs', uploaded_file.name), 'wb') as f:
             f.write(uploaded_file.getvalue())
+
+def save_excel_uploaded(xlsx_file):
+    # Make  path if not exist
+    if not os.path.exists('data_files'):
+        os.makedirs('data_files')
+
+    with open(os.path.join('data_files', xlsx_file.name), 'wb') as f:
+            f.write(xlsx_file.getvalue())
 
 # Custom summary function
 def custom_summary(pdf_folder, custom_prompt):
@@ -92,6 +104,12 @@ with st.sidebar:
     upload_files = st.file_uploader(label='Upload pdf files', type= ['pdf'], accept_multiple_files=True)
     save_uploaded_pdfs(upload_files)
 
+    upload_excell_files = st.file_uploader(label='Upload excel file', type=['xlsx', 'csv'])
+    try:
+        save_excel_uploaded(upload_excell_files)
+    except:
+        st.write('There is not a data file')
+
 
 # sesions states trackers
 
@@ -120,12 +138,14 @@ with tabs[0]:
     
 
     if get_summaries:
-        summaries_list = custom_summary("pdfs", custom_prompt=summarize_prompt)
-        summaries = '\n\n'.join([summary for summary in summaries_list])                     
+        # summaries_list = custom_summary("pdfs", custom_prompt=summarize_prompt)
+        # summaries = '\n\n'.join([summary for summary in summaries_list])     
+        x=2                
         
-    # Save all summaries into one .word file   
+    # Save all summaries into one .word file  
     
     summaries_to_word_download(summaries)
+
     st.write(summaries)
 
 #--------------------------------------------Tab for query  with multiples pdfs---------------------------------------------------------------
@@ -148,6 +168,30 @@ with tabs[1]:
 
 
 
+#------------------------------------------- Chat with excel ---------------------------------------------------------------------------------------
+
+with tabs[2]:
+    if os.path.exists('data_files') and len(os.listdir('data_files'))>0:
+        query = st.text_area(label='Query')
+        # get the file's path
+        col_df, col_answer = st.columns(2)
+        data_files_path = os.listdir('data_files')[-1]
+        # print('data files path:', data_files_path)
+        if 'xlsx' in data_files_path:
+            df = pd.read_excel('data_files/'+ data_files_path)
+        col_df.dataframe(df)
+        csv_name = data_files_path.split('/')[-1].rstrip('.xlsx')+'.csv'
+        df.to_csv('data_files/'+csv_name)
+
+        # create a csv agent
+        agent = create_csv_agent(
+            ChatOpenAI(temperature=0, model="gpt-3.5-turbo"),
+            path='data_files/'+csv_name,
+            verbose=True,
+            agent_type=AgentType.OPENAI_FUNCTIONS,
+        )
+        if query:
+            col_answer.write(agent.run(query))
 
 
 
