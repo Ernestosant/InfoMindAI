@@ -173,6 +173,7 @@ with tabs[1]:
 with tabs[2]:
     if os.path.exists('data_files') and len(os.listdir('data_files'))>0:
         query = st.text_area(label='Query')
+        
         # get the file's path
         col_df, col_answer = st.columns(2)
         data_files_path = os.listdir('data_files')[-1]
@@ -180,6 +181,7 @@ with tabs[2]:
         if 'xlsx' in data_files_path:
             df = pd.read_excel('data_files/'+ data_files_path)
         col_df.dataframe(df)
+        col_answer.markdown("## Answers")
         csv_name = data_files_path.split('/')[-1].rstrip('.xlsx')+'.csv'
         df.to_csv('data_files/'+csv_name)
 
