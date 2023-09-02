@@ -1,0 +1,1 @@
+This folder save the pdfs files used to QA feature
