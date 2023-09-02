@@ -14,12 +14,19 @@ from langchain.agents import create_csv_agent
 from langchain.agents.agent_types import AgentType
 import shutil
 
-# Limpiando archivos temporales
-if os.path.exists('pdfs') and  os.path.isdir('pdfs'):
-    shutil.rmtree('pdfs')
 
-if os.path.exists('data_files') and os.path.isdir('data_files'):
-    shutil.rmtree('data_files')
+# Cleaning temp directories
+try:
+    if os.path.exists('pdfs') and os.path.isdir('pdfs'):
+        shutil.rmtree('pdfs')
+except Exception as e:
+    print(f"An error occurred while deleting 'pdfs': {e}")
+
+try:
+    if os.path.exists('data_files') and os.path.isdir('data_files'):
+        shutil.rmtree('data_files')
+except Exception as e:
+    print(f"An error occurred while deleting 'data_files': {e}")
 
 
 #***********************Functions***************************************************************************************
