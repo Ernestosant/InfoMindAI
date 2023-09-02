@@ -15,10 +15,10 @@ from langchain.agents.agent_types import AgentType
 import shutil
 
 # Limpiando archivos temporales
-if os.path.exists('pdfs'):
+if os.path.exists('pdfs') and  os.path.isdir('pdfs'):
     shutil.rmtree('pdfs')
 
-if os.path.exists('data_files'):
+if os.path.exists('data_files') and os.path.isdir('data_files'):
     shutil.rmtree('data_files')
 
 
