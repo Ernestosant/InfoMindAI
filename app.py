@@ -15,8 +15,12 @@ from langchain.agents.agent_types import AgentType
 import shutil
 
 # Limpiando archivos temporales
-shutil.rmtree('pdfs')
-shutil.rmtree('data_files')
+try:
+    shutil.rmtree('pdfs')
+    shutil.rmtree('data_files')
+except:
+    with st.sidebar:
+        st.write("There is no documents")
 
 
 #***********************Functions***************************************************************************************
