@@ -181,7 +181,7 @@ with tabs[1]:
 
     question = st.text_area("Question")
     if len(os.listdir('pdfs'))>0 and apikey:
-        if question and  st.session_state['embedings']:
+        if question:
             response = query_engine.query(question)
             st.write(response.response)
       
