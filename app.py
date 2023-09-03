@@ -171,21 +171,24 @@ with tabs[1]:
         st.session_state['embedings'] = False
 
     question = st.text_area("Question")
-    if len(os.listdir('pdfs'))>0 and apikey and not(st.session_state['embedings']):    
-        #Get text from pdfs
-        pdf = SimpleDirectoryReader('pdfs').load_data()
-        #Select the LLm model
-        model = LLMPredictor(llm=ChatOpenAI(temperature=0, model_name='gpt-3.5-turbo'))
+    if len(os.listdir('pdfs'))>0 and apikey and not(st.session_state['embedings']):
+        try:    
+            #Get text from pdfs
+            pdf = SimpleDirectoryReader('pdfs').load_data()
+            #Select the LLm model
+            model = LLMPredictor(llm=ChatOpenAI(temperature=0, model_name='gpt-3.5-turbo'))
 
-        # Create Vector database
-        service_context = ServiceContext.from_defaults(llm_predictor=model)
-        index = GPTVectorStoreIndex.from_documents(pdf, service_context = service_context)
-        query_engine = index.as_query_engine()
-        st.session_state['embedings'] = True
+            # Create Vector database
+            service_context = ServiceContext.from_defaults(llm_predictor=model)
+            index = GPTVectorStoreIndex.from_documents(pdf, service_context = service_context)
+            query_engine = index.as_query_engine()
+            st.session_state['embedings'] = True
 
-        if question:
-            response = query_engine.query(question)
-            st.write(response.response)
+            if question:
+                response = query_engine.query(question)
+                st.write(response.response)
+        except:
+            st.write('Verifique sus credenciales')
 
 
 
