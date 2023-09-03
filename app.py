@@ -115,6 +115,7 @@ with st.sidebar:
     upload_files = st.file_uploader(label='Upload pdf files', type= ['pdf'], accept_multiple_files=True)
     save_uploaded_pdfs(upload_files)
 
+
     upload_excell_files = st.file_uploader(label='Upload excel file', type=['xlsx', 'csv'])
     try:
         save_excel_uploaded(upload_excell_files)
@@ -161,28 +162,29 @@ with tabs[0]:
 
 #--------------------------------------------Tab for query  with multiples pdfs---------------------------------------------------------------
 with tabs[1]:
+
+
     if 'embedings' not in st.session_state:
         st.session_state['embedings'] = False
 
+    if upload_files:
+        #Get text from pdfs
+        pdf = SimpleDirectoryReader('pdfs').load_data()
+        #Select the LLm model
+        model = LLMPredictor(llm=ChatOpenAI(temperature=0, model_name='gpt-3.5-turbo'))
+
+        # Create Vector database
+        service_context = ServiceContext.from_defaults(llm_predictor=model)
+        index = GPTVectorStoreIndex.from_documents(pdf, service_context = service_context)
+        query_engine = index.as_query_engine()
+        st.session_state['embedings'] = True    
+
     question = st.text_area("Question")
-    if len(os.listdir('pdfs'))>0 and apikey and not(st.session_state['embedings']):
-        try:    
-            #Get text from pdfs
-            pdf = SimpleDirectoryReader('pdfs').load_data()
-            #Select the LLm model
-            model = LLMPredictor(llm=ChatOpenAI(temperature=0, model_name='gpt-3.5-turbo'))
-
-            # Create Vector database
-            service_context = ServiceContext.from_defaults(llm_predictor=model)
-            index = GPTVectorStoreIndex.from_documents(pdf, service_context = service_context)
-            query_engine = index.as_query_engine()
-            st.session_state['embedings'] = True
-
-            if question:
-                response = query_engine.query(question)
-                st.write(response.response)
-        except:
-            st.write('Verifique sus credenciales')
+    if len(os.listdir('pdfs'))>0 and apikey:
+        if question and  st.session_state['embedings']:
+            response = query_engine.query(question)
+            st.write(response.response)
+      
 
 
 
