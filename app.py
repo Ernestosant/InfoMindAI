@@ -95,8 +95,8 @@ def summaries_to_word_download(content):
 
 
 #***********************Interface**************************************************************************************
-# st.set_page_config(page_title="InfoMindAI", page_icon='project_logo.jpg',
-#                     layout='centered', initial_sidebar_state='auto',)
+st.set_page_config(page_title="InfoMindAI", page_icon='project_logo.jpg',
+                    layout='centered', initial_sidebar_state='auto',)
 
 st.title("InfoMindAI")
 
