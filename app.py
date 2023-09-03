@@ -98,17 +98,7 @@ def summaries_to_word_download(content):
 st.set_page_config(page_title="InfoMindAI", page_icon='project_logo.jpg',
                     layout='centered', initial_sidebar_state='auto',)
 
-# Setup
-title = "InfoMindAI"
-url_logo = "project_logo.jpg"  
-
-html_code = f"""
-    <div style="text-align: center; margin: 20px;">
-        <h1>{title} <img src="{url_logo}" style="height:5px;"></h1>
-    </div>
-"""
-
-st.markdown(html_code, unsafe_allow_html=True)
+st.title("InfoMindAI")
 
 
 tab_titles = ['Sumarize PDFs','Chat with PDFs', 'Chat with CSV and Excel']
