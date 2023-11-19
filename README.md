@@ -22,7 +22,7 @@ InfoMindAI is an application designed to interact with and extract knowledge fro
 1. Clone the repository.
 2. Install required Python libraries using `pip install -r requirements.txt`.
 3. Export your OpenAI API Key to the environment or directly input it in the sidebar of the Streamlit app.
-4. Run the application using `streamlit run your_filename.py`.
+4. Run the application using `streamlit run app.py`.
 
 ## How to use
 
