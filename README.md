@@ -41,16 +41,4 @@ InfoMindAI is an application designed to interact with and extract knowledge fro
     - Pose your query related to the dataset in the text area.
     - Receive an answer based on the data.
 
-## Contributors
-
-- [Your Name](Your GitHub Link) - Initial work
-
-## License
-
-This project is licensed under the MIT License.
-
-## Acknowledgements
-
-- OpenAI for their robust GPT-3.5-turbo model.
-- Streamlit community for their continuous support and awesome framework.
 
