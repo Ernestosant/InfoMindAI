@@ -191,17 +191,17 @@ with tabs[1]:
 #------------------------------------------- Chat with excel ---------------------------------------------------------------------------------------
 
 with tabs[2]:
-    if os.path.exists('data_files') and len(os.listdir('data_files'))>0:
-        query = st.text_area(label='Query')
+    if os.path.exists('data_files') and len(os.listdir('data_files'))>0:      
         
         # get the file's path
-        col_df, col_answer = st.columns(2)
+       
         data_files_path = os.listdir('data_files')[-1]
         # print('data files path:', data_files_path)
         if 'xlsx' in data_files_path:
             df = pd.read_excel('data_files/'+ data_files_path)
-        col_df.dataframe(df)
-        col_answer.markdown("## Answers")
+        st.dataframe(df)
+        query = st.text_area(label='Query')
+        st.markdown("## Answers")
         csv_name = data_files_path.split('/')[-1].rstrip('.xlsx')+'.csv'
         df.to_csv('data_files/'+csv_name)
         try:
@@ -213,7 +213,7 @@ with tabs[2]:
                 agent_type=AgentType.OPENAI_FUNCTIONS,
             )
             if query:
-                col_answer.write(agent.run(query))
+                st.write(agent.run(query))
         except:
             st.write('Set Api_key')
 
